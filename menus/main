@@ -1,0 +1,8 @@
+#!/bin/bash
+
+declare -A am_items=(
+  ['  Power ']="anymenu power"
+  ['酪  Network ']="anymenu network"
+  ['  dunstlog']="alacritty -e $HOME/.scripts/dunstlog.sh -b"
+  ['  Tools ']="anymenu tools"
+)

@@ -1,0 +1,45 @@
+#!/bin/bash
+
+#$1 is wired, wifi, vpn
+#( global
+nm_type="$1"
+case $nm_type in
+  wifi)
+    #nm_icon=" "
+    nm_icon=""
+    nm_active=$(LC_ALL=C nmcli -c no -f active,bssid dev wifi list | grep -E "^yes" | grep -Eoi "([0-9A-F]{2}:){5}[0-9A-F]{2}")
+    nm_all=$(nmcli -c no -f bars,ssid,bssid dev wifi list)
+    ;;
+  vpn)
+    nm_icon="旅"
+    nm_active=$(nmcli -c no -f uuid,type c show --active | grep -E "$nm_type"' *$' | sed "s/ \{1,\}$nm_type *//g")
+    nm_all=$(nmcli -c no -f name,uuid,type c show | grep -E "$nm_type"' *$' | sed "s/ \{1,\}$nm_type *//g")
+    ;;
+  wired)
+    nm_icon="酪"
+    nm_active=$(nmcli -c no -f uuid,type c show --active | grep -E "$nm_type"' *$' | sed "s/ \{1,\}$nm_type *//g")
+    nm_all=$(nmcli -c no -f name,uuid,type c show | grep -E "$nm_type"' *$' | sed "s/ \{1,\}$nm_type *//g")
+    ;;
+esac
+nm_menu="menus/$nm_type"
+
+#)
+
+#( main
+echo "declare -A am_items=(" > "$nm_menu"
+echo "  ['  ..']='anymenu network'" >> "$nm_menu"
+IFS=$'\r\n'
+for n in $(echo "$nm_all" | grep -Eoi '([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}|([0-9A-F]{2}:){5}[0-9A-F]{2})'); do
+  active="   "
+  action="up"
+  name="$(echo "$nm_all" | grep -E "$n" | sed "s/ *$n *//g")"
+  if [ "$n" == "$nm_active" ]; then
+    active="  "
+    action="down"
+  fi
+  echo "  ['$nm_icon$active$name']='nmcli c $action $n & helpers/am_nm $nm_type'" >> "$nm_menu"
+done
+echo ")" >> "$nm_menu"
+anymenu "$(basename "$nm_menu")"
+rm -f "$nm_menu"
+#)

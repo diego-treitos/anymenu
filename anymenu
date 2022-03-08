@@ -1,0 +1,21 @@
+#!/bin/bash
+
+#( globals
+am_config_home="$HOME/.config/anymenu"
+am_menus_dir="$am_config_home/menus"
+am_menu="main"
+#)
+
+cd $am_config_home
+
+[ -n "$1" ] && am_menu="$1"
+
+. "$am_menus_dir/$am_menu"
+
+choice=$(
+  for i in "${!am_items[@]}"; do
+    echo "$i"
+  done | sort -k2 | rofi -dmenu -i -p "$am_menu"
+)
+
+[ -n "$choice" ] && eval "${am_items[$choice]}"

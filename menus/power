@@ -1,0 +1,11 @@
+#!/bin/bash
+
+declare -A am_items=(
+  ['  ..']='anymenu main'
+  ['  Lock']='i3lock_cool -f'
+  ['  Logout']='bspc quit'
+  ['  Suspend']='systemctl -i suspend'
+  ['  Hibernate']='systemctl -i hibernate'
+  ['  Reboot']='systemctl -i reboot'
+  ['  Shutdown']='systemctl -i poweroff'
+)

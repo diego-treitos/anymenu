@@ -1,0 +1,8 @@
+#!/bin/bash
+
+declare -A am_items=(
+  ['  ..']='anymenu main'
+  ['酪  Ethernet']='helpers/am_nm ethernet'
+  ['  Wifi']='helpers/am_nm wifi'
+  ['旅  VPN']='helpers/am_nm vpn'
+)
