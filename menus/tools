@@ -1,5 +1,5 @@
 #!/bin/bash
 
 declare -A am_items=(
-  ['ﱬ  Generate Password']="apg -M SNCL -m 17 -n1 | tr -d '\n' | xclip -i"
+  ['  Generate Password']="apg -M SNCL -m 17 -n1 | tr -d '\n' | xclip -i"
 )
