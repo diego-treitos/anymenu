@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#$1 is wired, wifi, vpn
+#$1 is ethernet, wifi, vpn
 #( global
 nm_type="$1"
 case $nm_type in
@@ -15,7 +15,7 @@ case $nm_type in
     nm_active=$(nmcli -c no -f uuid,type c show --active | grep -E "$nm_type"' *$' | sed "s/ \{1,\}$nm_type *//g")
     nm_all=$(nmcli -c no -f name,uuid,type c show | grep -E "$nm_type"' *$' | sed "s/ \{1,\}$nm_type *//g")
     ;;
-  wired)
+  ethernet)
     nm_icon="酪"
     nm_active=$(nmcli -c no -f uuid,type c show --active | grep -E "$nm_type"' *$' | sed "s/ \{1,\}$nm_type *//g")
     nm_all=$(nmcli -c no -f name,uuid,type c show | grep -E "$nm_type"' *$' | sed "s/ \{1,\}$nm_type *//g")
