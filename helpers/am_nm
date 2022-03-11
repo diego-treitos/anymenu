@@ -32,7 +32,7 @@ IFS=$'\r\n'
 for n in $(echo "$nm_all" | grep -Eoi '([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}|([0-9A-F]{2}:){5}[0-9A-F]{2})'); do
   active="   "
   action="up"
-  name="$(echo "$nm_all" | grep -E "$n" | sed "s/ *$n *//g")"
+  name="$(echo "$nm_all" | grep -E "$n" | sed "s/ *$n *//g" | tr \' \`)"
   if [ "$n" == "$nm_active" ]; then
     active="  "
     action="down"
