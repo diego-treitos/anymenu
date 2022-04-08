@@ -3,12 +3,19 @@
 #$1 is ethernet, wifi, vpn
 #( global
 nm_type="$1"
+action_up="c up"
+action_down="c down"
+id_regex='[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
+
 case $nm_type in
   wifi)
     #nm_icon=" "
     nm_icon=""
     nm_active=$(LC_ALL=C nmcli -c no -f active,bssid dev wifi list | grep -E "^yes" | grep -Eoi "([0-9A-F]{2}:){5}[0-9A-F]{2}")
     nm_all=$(nmcli -c no -f bars,ssid,bssid dev wifi list)
+    action_up="d wifi connect"
+    action_down="d wifi disconnect"
+    id_regex='([0-9A-F]{2}:){5}[0-9A-F]{2}'
     ;;
   vpn)
     nm_icon="旅"
@@ -29,16 +36,18 @@ nm_menu="menus/$nm_type"
 echo "declare -A am_items=(" > "$nm_menu"
 echo "  ['  ..']='anymenu network'" >> "$nm_menu"
 IFS=$'\r\n'
-for n in $(echo "$nm_all" | grep -Eoi '([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}|([0-9A-F]{2}:){5}[0-9A-F]{2})'); do
+
+for n in $(echo "$nm_all" | grep -Eoi "$id_regex" ); do
   active="   "
-  action="up"
+  action="$action_up"
   name="$(echo "$nm_all" | grep -E "$n" | sed "s/ *$n *//g" | tr \' \`)"
   if [ "$n" == "$nm_active" ]; then
     active="  "
-    action="down"
+    action="$action_down"
   fi
-  echo "  ['$nm_icon$active$name']='nmcli c $action $n & helpers/am_nm $nm_type'" >> "$nm_menu"
+  echo "  ['$nm_icon$active$name']='nmcli $action $n'" >> "$nm_menu"
 done
+
 echo ")" >> "$nm_menu"
 anymenu "$(basename "$nm_menu")"
 rm -f "$nm_menu"
