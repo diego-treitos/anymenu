@@ -19,8 +19,8 @@ case $nm_type in
     ;;
   vpn)
     nm_icon="旅"
-    nm_active=$(nmcli -c no -f uuid,type c show --active | grep -E "$nm_type"' *$' | sed "s/ \{1,\}$nm_type *//g")
-    nm_all=$(nmcli -c no -f name,uuid,type c show | grep -E "$nm_type"' *$' | sed "s/ \{1,\}$nm_type *//g")
+    nm_active=$(nmcli -c no -f uuid,type c show --active | grep -E "($nm_type|wireguard)"' *$' | sed "s/ \{1,\}$nm_type *//g" | sed "s/ \{1,\}wireguard *//g")
+    nm_all=$(nmcli -c no -f name,uuid,type c show | grep -E "($nm_type|wireguard)"' *$' | sed "s/ \{1,\}wireguard *//g")
     ;;
   ethernet)
     nm_icon="酪"
