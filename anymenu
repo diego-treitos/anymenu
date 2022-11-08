@@ -6,7 +6,7 @@ am_menus_dir="$am_config_home/menus"
 am_menu="main"
 #)
 
-cd $am_config_home
+cd "$am_config_home" || exit 1
 
 [ -n "$1" ] && am_menu="$1"
 

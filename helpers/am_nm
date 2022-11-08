@@ -9,8 +9,7 @@ id_regex='[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
 
 case $nm_type in
   wifi)
-    #nm_icon=" "
-    nm_icon=""
+    nm_icon=""
     nm_active=$(LC_ALL=C nmcli -c no -f active,bssid dev wifi list | grep -E "^yes" | grep -Eoi "([0-9A-F]{2}:){5}[0-9A-F]{2}")
     nm_all=$(nmcli -c no -f bars,ssid,bssid dev wifi list)
     action_up="d wifi connect"
@@ -38,7 +37,7 @@ echo "  ['  ..']='anymenu network'" >> "$nm_menu"
 IFS=$'\r\n'
 
 for n in $(echo "$nm_all" | grep -Eoi "$id_regex" ); do
-  active="   "
+  active="  " # The first char here is an unicode space so the active one is sorted first
   action="$action_up"
   name="$(echo "$nm_all" | grep -E "$n" | sed "s/ *$n *//g" | tr \' \`)"
   if [ "$n" == "$nm_active" ]; then
