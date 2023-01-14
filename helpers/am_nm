@@ -26,6 +26,11 @@ case $nm_type in
     nm_active=$(nmcli -c no -f uuid,type c show --active | grep -E "$nm_type"' *$' | sed "s/ \{1,\}$nm_type *//g")
     nm_all=$(nmcli -c no -f name,uuid,type c show | grep -E "$nm_type"' *$' | sed "s/ \{1,\}$nm_type *//g")
     ;;
+  bluetooth)
+    nm_icon=" "
+    nm_active=$(nmcli -c no -f uuid,type c show --active | grep -E "$nm_type"' *$' | sed "s/ \{1,\}$nm_type *//g")
+    nm_all=$(nmcli -c no -f name,uuid,type c show | grep -E "$nm_type"' *$' | sed "s/ \{1,\}$nm_type *//g")
+    ;;
 esac
 nm_menu="menus/$nm_type"
 

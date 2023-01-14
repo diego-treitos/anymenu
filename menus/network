@@ -5,4 +5,5 @@ declare -A am_items=(
   ['酪  Ethernet']='helpers/am_nm ethernet'
   ['  Wifi']='helpers/am_nm wifi'
   ['旅  VPN']='helpers/am_nm vpn'
+  ['  Bluetooth']='helpers/am_nm bluetooth'
 )
