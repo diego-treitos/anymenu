@@ -45,7 +45,7 @@ for n in $(echo "$nm_all" | grep -Eoi "$id_regex" ); do
   active="  " # The first char here is an unicode space so the active one is sorted first
   action="$action_up"
   name="$(echo "$nm_all" | grep -E "$n" | sed "s/ *$n *//g" | tr \' \`)"
-  if [ "$n" == "$nm_active" ]; then
+  if echo "$nm_active" | grep -Eq "^$n\$"; then
     active="  "
     action="$action_down"
   fi
