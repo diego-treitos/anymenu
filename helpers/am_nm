@@ -10,7 +10,7 @@ id_regex='[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
 case $nm_type in
   wifi)
     nm_icon=""
-    nm_active=$(LC_ALL=C nmcli -c no -f active,bssid dev wifi list | grep -E "^yes" | grep -Eoi "([0-9A-F]{2}:){5}[0-9A-F]{2}")
+    nm_active=$(LC_ALL=C nmcli -c no -f active,bssid dev wifi list | grep --color=never -E "^yes" | grep --color=never -Eoi "([0-9A-F]{2}:){5}[0-9A-F]{2}")
     nm_all=$(nmcli -c no -f bars,ssid,bssid dev wifi list)
     action_up="d wifi connect"
     action_down="d wifi disconnect"
@@ -18,18 +18,18 @@ case $nm_type in
     ;;
   vpn)
     nm_icon="旅"
-    nm_active=$(nmcli -c no -f uuid,type c show --active | grep -E "($nm_type|wireguard)"' *$' | sed "s/ \{1,\}$nm_type *//g" | sed "s/ \{1,\}wireguard *//g")
-    nm_all=$(nmcli -c no -f name,uuid,type c show | grep -E "($nm_type|wireguard)"' *$' | sed "s/ \{1,\}wireguard *//g")
+    nm_active=$(nmcli -c no -f uuid,type c show --active | grep --color=never -E "($nm_type|wireguard)"' *$' | sed "s/ \{1,\}$nm_type *//g" | sed "s/ \{1,\}\(wireguard\|vpn\) *//g")
+    nm_all=$(nmcli -c no -f name,uuid,type c show | grep --color=never -E "($nm_type|wireguard)"' *$' | sed "s/ \{1,\}\(wireguard\|vpn\) *//g")
     ;;
   ethernet)
     nm_icon="酪"
-    nm_active=$(nmcli -c no -f uuid,type c show --active | grep -E "$nm_type"' *$' | sed "s/ \{1,\}$nm_type *//g")
-    nm_all=$(nmcli -c no -f name,uuid,type c show | grep -E "$nm_type"' *$' | sed "s/ \{1,\}$nm_type *//g")
+    nm_active=$(nmcli -c no -f uuid,type c show --active | grep --color=never -E "$nm_type"' *$' | sed "s/ \{1,\}$nm_type *//g")
+    nm_all=$(nmcli -c no -f name,uuid,type c show | grep --color=never -E "$nm_type"' *$' | sed "s/ \{1,\}$nm_type *//g")
     ;;
   bluetooth)
     nm_icon=" "
-    nm_active=$(nmcli -c no -f uuid,type c show --active | grep -E "$nm_type"' *$' | sed "s/ \{1,\}$nm_type *//g")
-    nm_all=$(nmcli -c no -f name,uuid,type c show | grep -E "$nm_type"' *$' | sed "s/ \{1,\}$nm_type *//g")
+    nm_active=$(nmcli -c no -f uuid,type c show --active | grep --color=never -E "$nm_type"' *$' | sed "s/ \{1,\}$nm_type *//g")
+    nm_all=$(nmcli -c no -f name,uuid,type c show | grep --color=never -E "$nm_type"' *$' | sed "s/ \{1,\}$nm_type *//g")
     ;;
 esac
 nm_menu="menus/$nm_type"
@@ -41,11 +41,11 @@ echo "declare -A am_items=(" > "$nm_menu"
 echo "  ['  ..']='anymenu network'" >> "$nm_menu"
 IFS=$'\r\n'
 
-for n in $(echo "$nm_all" | grep -Eoi "$id_regex" ); do
+for n in $(echo "$nm_all" | grep --color=never -Eoi "$id_regex" ); do
   active="  " # The first char here is an unicode space so the active one is sorted first
   action="$action_up"
-  name="$(echo "$nm_all" | grep -E "$n" | sed "s/ *$n *//g" | tr \' \`)"
-  if echo "$nm_active" | grep -Eq "^$n\$"; then
+  name="$(echo "$nm_all" | grep --color=never -E "$n" | sed "s/ *$n *//g" | tr \' \`)"
+  if echo "$nm_active" | grep --color=never -Eq "^$n\$"; then
     active="  "
     action="$action_down"
   fi
