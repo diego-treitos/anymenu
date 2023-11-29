@@ -11,7 +11,7 @@ case $nm_type in
   wifi)
     nm_icon=""
     nm_active=$(LC_ALL=C nmcli -c no -f active,bssid dev wifi list | grep --color=never -E "^yes" | grep --color=never -Eoi "([0-9A-F]{2}:){5}[0-9A-F]{2}")
-    nm_all=$(nmcli -c no -f bars,ssid,bssid dev wifi list)
+    nm_all=$(nmcli -c no -f security,bars,ssid,bssid dev wifi list | sed "s/^\(WPA.\|WEP\).*▂/ ▂/g"|sed "s/^--.*▂/  ▂/g")
     action_up="d wifi connect"
     action_down="d wifi disconnect"
     id_regex='([0-9A-F]{2}:){5}[0-9A-F]{2}'
